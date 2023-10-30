@@ -1,0 +1,23 @@
+{
+"message_header": "from this message:",
+"message_task": "decide action to call from list:",
+"message_actions": {
+    "message_action": [
+        "create_course",
+        "create_calendar_event",
+        "create_enrollment",
+        "create_enrollment",
+        "create_user",
+        "delete_calendar_event",
+        "list_students_on_course",
+        "list_people_on_course",
+        "list_course_of_student",
+        "list_user_to_do_tasks",
+        "list_course_enrollments",
+        "update_calendar_event"
+    ]
+},
+"message_bottom": "only return json like {message-action: insert_action_depend_on_message}",
+"system_instructions": "Classify message sent by user to one of provided message actions. Make repsonse in json format with key message_action and classified value."
+}
+

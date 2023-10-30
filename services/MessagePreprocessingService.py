@@ -6,13 +6,13 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import demoji
 import string
+from num2words import num2words
+import re
 
 #nltk.download('stopwords')
 #nltk.download('punkt')
 #nltk.download('wordnet')
 #nltk.download('omw-1.4')
-
-
 class MessagePreprocessingPipelineService:
     T = TypeVar('T')
 
@@ -24,6 +24,8 @@ class MessagePreprocessingPipelineService:
                                  cls.__remove_punctuation,
                                  cls.__lowercase_message,
                                  cls.__remove_stopwords,
+                                 cls.__divide_digits_from_words,
+                                 cls.__turn_digits_to_words,
                                  cls.__word_lemmatizer,
                                  cls.__get_preprocessed_message]
         return cls.__custom_pipeline(raw_message= raw_message, function_pipeline=pipeline_steps)
@@ -68,8 +70,31 @@ class MessagePreprocessingPipelineService:
 
     #turning tokens into processed message
     @classmethod
-    def __get_preprocessed_message(cls, bag_of_words):
+    def __get_preprocessed_message(cls, bag_of_words: list) -> string:
         return " ".join(bag_of_words)
 
+    #turns digit written numbers into word written numbers
+    @classmethod
+    def __turn_digits_to_words(cls, bag_of_words: list) -> list:
+        return [num2words(int(word)) if word.isdigit() else word for word in bag_of_words]
+
+    #seperates numbers if sticked to words
+    @classmethod
+    def __divide_digits_from_words(cls, bag_of_words: list) -> list:
+        pattern: string = r'(\d+|\D+)'
+        result: list = []
+        for word in bag_of_words:
+            matches: cls.T = re.findall(pattern, word)
+            extracted_elements: list = []
+            for match in matches:
+                extracted_elements.append(match)
+
+            result.extend(extracted_elements)
+
+        return result
+
+
+if __name__ == "__main__":
+    print(MessagePreprocessingPipelineService.preprocess_message_pipeline("10cool go9.4od"))
 
 

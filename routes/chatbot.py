@@ -19,4 +19,4 @@ def send_message_to_chatbot():
     #Sendining data to controller
     res: dict = ChatBotController.send_message_to_chatbot(user_message=user_message)
 
-    return jsonify({"res": res}), 200
+    return jsonify(res), 200

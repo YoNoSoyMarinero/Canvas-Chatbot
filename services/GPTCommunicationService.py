@@ -2,6 +2,7 @@ import json
 import os
 import openai
 from dotenv import load_dotenv
+import asyncio
 
 class GPTCommunicationService:
 

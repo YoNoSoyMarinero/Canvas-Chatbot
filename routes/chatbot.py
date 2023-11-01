@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from schemas.UserMessageSchema import UserMessageSchema, UserMessage
 from controllers.ChatBotController import ChatBotController
+import asyncio
 
 chatbot_bp: Blueprint = Blueprint('chatbot', __name__)
 
@@ -8,7 +9,7 @@ chatbot_bp: Blueprint = Blueprint('chatbot', __name__)
 #Creating route for communication with chatbot
 @chatbot_bp.route('/', methods=['POST'])
 @chatbot_bp.route('/chatbot', methods=['POST'])
-def send_message_to_chatbot():
+async def send_message_to_chatbot():
     #Checking if request data is valid
     data: dict = request.get_json()
     schema: UserMessageSchema = UserMessageSchema()
@@ -17,6 +18,6 @@ def send_message_to_chatbot():
     except:
         return jsonify({"Error message": "Invali request body format!"}), 400
     #Sendining data to controller
-    res: dict = ChatBotController.send_message_to_chatbot(user_message=user_message)
+    res: dict = await ChatBotController.send_message_to_chatbot(user_message=user_message)
 
     return jsonify(res)

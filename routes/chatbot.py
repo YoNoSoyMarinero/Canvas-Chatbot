@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from schemas.UserMessageSchema import UserMessageSchema, UserMessage
 from controllers.ChatBotController import ChatBotController
 
-chatbot_bp: Blueprint = Blueprint('user', __name__)
+chatbot_bp: Blueprint = Blueprint('chatbot', __name__)
 
 
 #Creating route for communication with chatbot

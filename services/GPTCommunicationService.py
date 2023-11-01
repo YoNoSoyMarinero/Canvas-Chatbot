@@ -16,5 +16,4 @@ class GPTCommunicationService:
                 {"role": "user", "content": message}
             ]
         )
-        print(response)
         return json.loads(response["choices"][0]["message"]["content"])

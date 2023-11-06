@@ -20,4 +20,4 @@ async def send_message_to_chatbot():
     #Sendining data to controller
     res: dict = await ChatBotController.send_message_to_chatbot(user_message=user_message)
 
-    return jsonify(res)
+    return jsonify(res), res['status']

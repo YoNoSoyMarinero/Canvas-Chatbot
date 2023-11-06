@@ -62,7 +62,7 @@ class MessagePreprocessingPipelineService:
     def __remove_emojis(cls, raw_message: string) -> string:
         return demoji.replace(raw_message, "")
 
-    #turininig tokens into lemmas
+    #turning tokens into lemmas
     @classmethod
     def __word_lemmatizer(cls, bag_of_words: list) -> list:
         wnl: WordNetLemmatizer = WordNetLemmatizer()
@@ -93,8 +93,5 @@ class MessagePreprocessingPipelineService:
 
         return result
 
-
-if __name__ == "__main__":
-    print(MessagePreprocessingPipelineService.preprocess_message_pipeline("10cool go9.4od"))
 
 

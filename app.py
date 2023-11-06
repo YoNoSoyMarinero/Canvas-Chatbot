@@ -12,4 +12,4 @@ app.register_blueprint(chatbot.chatbot_bp)
 load_dotenv('.env')
 
 if (__name__ == '__main__'):
-    app.run(debug=True, host=os.getenv("HOST"), port=os.getenv("PORT"))
+    app.run(debug=False, host=os.getenv("HOST"), port=os.getenv("PORT"))

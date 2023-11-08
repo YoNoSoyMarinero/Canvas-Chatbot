@@ -5,13 +5,13 @@ import asyncio
 from fuzzywuzzy import fuzz
 
 from utilities.UrlAndHeadrsUtillites import UrlAndHeadUtillites
+from utilities.HttpRequestUtillity import HttpRequestUtillity
 
 class CanvasApiCoursesService:
     async def get_all_courses(self) -> list:
         headers: dict = UrlAndHeadUtillites.create_headers(os.getenv("CANVAS_ADMIN_KEY"))
         url: str = UrlAndHeadUtillites.create_url(f"/accounts/1/courses")
-        async with httpx.AsyncClient() as client:
-            res = await client.get(url, headers=headers, timeout=httpx.Timeout(timeout=10.0))
+        res: httpx.Response = await HttpRequestUtillity.send_request("GET", url=url, headers=headers)
 
         return res.json()
 

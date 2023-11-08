@@ -42,6 +42,14 @@ class PromptBuilderService:
         return cls.__instruction_json_template['system_instructions_create_enrollment']
 
     @classmethod
+    def system_instruction_delete_calendar_event(cls) -> str:
+        return cls.__instruction_json_template['system_instructions_delete_calendar_event']
+
+    @classmethod
+    def system_instruction_update_calendar_event(cls) -> str:
+        return cls.__instruction_json_template['system_instructions_update_calendar_event']
+
+    @classmethod
     def system_instruction_create_course(cls) -> str:
         return cls.__instruction_json_template['system_instructions_create_course']
     @classmethod

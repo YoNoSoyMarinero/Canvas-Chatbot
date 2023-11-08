@@ -7,6 +7,7 @@ from services.GPTCommunicationService import GPTCommunicationService
 from services.PromptBuilderService import PromptBuilderService
 from services.CanavasApiCoursesService import CanvasApiCoursesService
 from services.CanvasApiUsersService import CanvasApiUsersService
+from services.CanvasApiCalendarsService import CanvasApiCalendarServices
 from utilities.UrlAndHeadrsUtillites import UrlAndHeadUtillites
 from utilities.HttpRequestUtillity import HttpRequestUtillity
 class CanvasApiCommunicatioService:
@@ -109,8 +110,21 @@ class CanvasApiCommunicatioService:
             body=user_json)
         return CanvasApiCommunicatioService.__canvas_handle_response(res, "element_created")
     @staticmethod
-    def __canvas_delete_calendar_event(user_message: UserMessage) -> dict:
-        pass
+    async def __canvas_delete_calendar_event(user_message: UserMessage) -> dict:
+        calendar_event_title: dict = GPTCommunicationService.send_message_to_gpt(
+            user_message.message_text,
+            PromptBuilderService.
+            system_instruction_delete_calendar_event())
+
+        calendar_event_id: int = await CanvasApiCalendarServices.get_calendar_event_id_by_title(
+            calendar_event_title['title'], user_message.token)
+
+        res: httpx.Response = await CanvasApiCommunicatioService.__canvas_send_request(
+            method="DELETE",
+            path=f"/calendar_events/{calendar_event_id}",
+            token=user_message.token
+        )
+        return CanvasApiCommunicatioService.__canvas_handle_response(res, "element_deleted")
 
     @staticmethod
     async def __canvas_get_students_on_course(user_message: UserMessage) -> dict:
@@ -164,8 +178,30 @@ class CanvasApiCommunicatioService:
         return CanvasApiCommunicatioService.__canvas_handle_response(res, "elements_listed")
 
     @staticmethod
-    def __canvas_update_calendar_event(user_message: UserMessage) -> dict:
-        pass
+    async def __canvas_update_calendar_event(user_message: UserMessage) -> dict:
+        calendar_event_title: dict = GPTCommunicationService.send_message_to_gpt(
+            user_message.message_text,
+            PromptBuilderService.
+            system_instruction_delete_calendar_event())
+
+        calendar_event_id: int = await CanvasApiCalendarServices.get_calendar_event_id_by_title(
+            calendar_event_title['title'], user_message.token)
+        canvas_api_user_service: CanvasApiUsersService = CanvasApiUsersService()
+        user_id: int = await canvas_api_user_service.get_user_id_by_login_id(user_message.user_email)
+        context_code: str = "user_" + str(user_id)
+        calendar_event_json: dict = GPTCommunicationService.send_message_to_gpt(
+            user_message.message_text,
+            PromptBuilderService
+            .system_instruction_update_calendar_event())
+
+        calendar_event_json['calendar_event']['context_code'] = context_code
+        calendar_event_json['calendar_event']['all_day'] = False
+        res: httpx.Response = await CanvasApiCommunicatioService.__canvas_send_request(
+            method="PUT",
+            path=f"/calendar_events/{calendar_event_id}",
+            token=user_message.token,
+            body=calendar_event_json)
+        return CanvasApiCommunicatioService.__canvas_handle_response(res, "element_updated")
 
     @staticmethod
     def __default_action(user_message: UserMessage) -> dict:

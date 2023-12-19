@@ -70,7 +70,7 @@ class CanvasApiCommunicatioService:
                                                                         .system_insturction_course_name())
         course_id: int = await canvas_api_courses_service.get_course_id_by_name(course_name['course_name'])
         if course_id == -1:
-            return {"readable-message": "That course doesn't exist!", "status": 400}
+            return {"readable_message": "That course doesn't exist!", "status": 400}
 
         email_pattern: str = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
         emails: list = re.findall(email_pattern, user_message.message_text)
@@ -78,7 +78,7 @@ class CanvasApiCommunicatioService:
         canvas_api_user_service: CanvasApiUsersService = CanvasApiUsersService()
         user_id: int = await canvas_api_user_service.get_user_id_by_login_id(email=email)
         if user_id == -1:
-            return {"readable-message": "That user doesn't exist!", "status": 400}
+            return {"readable_message": "That user doesn't exist!", "status": 400}
         enrollment_gpt: dict = GPTCommunicationService.send_message_to_gpt(user_message.message_text,
                                                                      PromptBuilderService
                                                                      .system_instruction_create_enrollment())
@@ -134,7 +134,7 @@ class CanvasApiCommunicatioService:
                                                                         .system_insturction_course_name())
         course_id: int = await canvas_api_courses_service.get_course_id_by_name(course_name['course_name'])
         if course_id == -1:
-            return {"readable-message": "That course doesn't exist!", "status": 400}
+            return {"readable_message": "That course doesn't exist!", "status": 400}
         res: httpx.Response = await CanvasApiCommunicatioService.__canvas_send_request(
             method="GET",
             path=f"/courses/{course_id}/students",
@@ -149,7 +149,7 @@ class CanvasApiCommunicatioService:
 
         course_id: int = await canvas_api_courses_service.get_course_id_by_name(course_name['course_name'])
         if course_id == -1:
-            return {"readable-message": "That course doesn't exist!", "status": 400}
+            return {"readable_message": "That course doesn't exist!", "status": 400}
         res: httpx.Response = await CanvasApiCommunicatioService.__canvas_send_request(
             method="GET",
             path=f"/courses/{course_id}/users",
@@ -162,7 +162,7 @@ class CanvasApiCommunicatioService:
         canvas_api_user_service: CanvasApiUsersService = CanvasApiUsersService()
         user_id: int = await canvas_api_user_service.get_user_id_by_login_id(user_message.user_email)
         if user_id == -1:
-            return {"readable-message": "That user doesn't exist!", "status": 400}
+            return {"readable_message": "That user doesn't exist!", "status": 400}
         res: httpx.Response = await CanvasApiCommunicatioService.__canvas_send_request(
             method="GET",
             path=f"/users/{user_id}/courses",

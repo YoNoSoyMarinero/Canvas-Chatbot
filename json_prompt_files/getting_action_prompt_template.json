@@ -12,7 +12,6 @@
         "action_list_of_all_people_which_attend_specific_courses",
         "action_list_of_all_courses_for_current_user_role_student",
         "action_list_of_all_upcoming_events",
-        "action_list_course_enrollments",
         "action_update_calendar_event",
         "action_not_specific_enough_to_figure_out_action"
     ]
